@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activation</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h2>Activation de votre compte</h2>
+<p id="message">Veuillez patienter...</p>
+
+<script>
+$(document).ready(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const uid = urlParams.get('uid');
+    const token = urlParams.get('token');
+
+    if(uid && token) {
+        $.post('http://127.0.0.1:8080/auth/users/activation/', { uid: uid, token: token }, function(data) {
+            $('#message').text('Compte activé avec succès. Vous serez redirigé dans quelques instants...');
+            setTimeout(function() {
+                window.location.href = "http://localhost:8501";
+            }, 3000);
+        }).fail(function() {
+            $('#message').text('Erreur lors de l\'activation. Veuillez réessayer.');
+        });
+    } else {
+        $('#message').text('Les paramètres UID et Token sont manquants.');
+    }
+});
+</script>
+
+</body>
+</html>
+
